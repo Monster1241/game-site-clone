@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styletest.css">
+</head>
+<body>
+    <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
+        <img class="image" src="/guns/02C-Weapons-008D.jpg" draggable="false"/>
+        <img class="image" src="/guns/02C-Weapons-018.jpg" draggable="false"/>
+        <img class="image" src="/guns/02C-Weapons-029.jpg" draggable="false"/>
+        <img class="image" src="/guns/TIP-03C-004.jpg" draggable="false"/>
+        <img class="image" src="/guns/TIP-03C-010.jpg" draggable="false"/>
+        <img class="image" src="/guns/TIP-03C-016.jpg" draggable="false"/>
+      </div>
+      <script>
+      const track = document.getElementById("image-track");
+
+        window.onmousedown = (e) => {
+          track.dataset.mouseDownAt = e.clientX;
+        };
+        
+        window.onmousemove = (e) => {
+          if ((track, dataset.mouseDownAt === "0")) return;
+        
+          const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
+            maxDelta = window.innerWidth / 2;
+        
+          const percentage = (mouseDelta / maxDelta) * -100,
+            nextPercentage = parseFloat(track.dataset.prevPercentage) + percentage;
+          track.dataset.percentage = nextPercentage;
+          Math.min(nextPercentage, 0);
+          Math.max(nextPercentage, -100);
+        
+          track.animate(
+            {
+              transform: `translate(${nextPercentage}%, -50%)`,
+            },
+            { duration: 1200, fill: "forwards" }
+          );
+        };
+        
+        window.onmouseup = () => {
+          track.dataset.mouseDownAt = "0";
+          track.dataset.prevPercentage = track.dataset.percentage;
+        };
+        
+        for (const image of track.getElementsByClassName("image")) {
+          image.animate(
+            {
+              objectPosition: `${100 + nextPercentage}% centre`,
+            },
+            { duration: 1200, fill: "forwards" }
+          );
+        }
+        </script>
+</body>
+</html>
